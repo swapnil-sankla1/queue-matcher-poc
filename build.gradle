@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect' // Enables using Kotlin within Spring boot
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2' // Jackson's Kotlin module
 
+    implementation 'com.gliwka.hyperscan:hyperscan:5.4.11-3.0.0' // VectorScan java wrapper
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Standard spring boot testing library
     testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.9.0' // Enables unit testing of Kafka streams
     testImplementation 'org.testcontainers:junit-jupiter' // Let Jupiter know that test containers need to spin up

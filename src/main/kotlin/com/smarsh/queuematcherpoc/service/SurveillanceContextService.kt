@@ -1,17 +1,23 @@
 /*
-* Copyright 2025 Smarsh Inc.
+ Copyright 2025 Smarsh Inc.
 */
 
 package com.smarsh.queuematcherpoc.service
 
 import com.smarsh.queuematcherpoc.domain.Communication
 import com.smarsh.queuematcherpoc.domain.SurveillanceContext
+import com.smarsh.queuematcherpoc.domain.SurveillanceContext.FilterPolicy.Scenario
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class SurveillanceContextService {
+    private val logger = LoggerFactory.getLogger(SurveillanceContextService::class.java)
+
     fun getEligibleSurveillanceContext(communication: Communication): List<SurveillanceContext> {
-        return all().filter { x -> x.tenantId == communication.tenantId }
+        val result = all().filter { x -> x.tenantId == communication.tenantId }
+        logger.debug("Found ${result.size} eligible surveillance contexts")
+        return result
     }
 
     private fun all(): List<SurveillanceContext> {
@@ -21,23 +27,22 @@ class SurveillanceContextService {
                 "queue1",
                 "tenant1",
                 listOf(
-                    SurveillanceContext.IgnorePolicy("ignore1", listOf("*smarsh*")),
-                    SurveillanceContext.IgnorePolicy("ignore2", listOf("*hr*"))
+                    SurveillanceContext.IgnorePolicy("queue1", "tenant1", "ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("filter1", listOf("*a*"), SurveillanceContext.FilterPolicy.Scenario("scenario1")),
-                    SurveillanceContext.FilterPolicy("filter2", listOf("*b*"), SurveillanceContext.FilterPolicy.Scenario("scenario2")),
-                    SurveillanceContext.FilterPolicy("filter3", listOf("*c*"), SurveillanceContext.FilterPolicy.Scenario("scenario3"))
+                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter1", listOf("a"), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter2", listOf("b"), Scenario("scenario2")),
+                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter3", listOf("c"), Scenario("scenario3"))
                 )
             ),
             SurveillanceContext(
                 "queue2",
                 "tenant1",
                 listOf(
-                    SurveillanceContext.IgnorePolicy("ignore1", listOf("*smarsh*")),
+                    SurveillanceContext.IgnorePolicy("queue2", "tenant1", "ignore1", listOf("caizin.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("filter1", listOf("*a*"), SurveillanceContext.FilterPolicy.Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("queue2", "tenant1", "filter1", listOf("a"), Scenario("scenario1")),
                 )
             )
         )

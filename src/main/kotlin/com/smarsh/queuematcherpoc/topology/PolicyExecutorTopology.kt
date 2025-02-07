@@ -3,6 +3,8 @@ package com.smarsh.queuematcherpoc.topology
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smarsh.queuematcherpoc.domain.Communication
 import com.smarsh.queuematcherpoc.domain.SurveillanceContext
+import com.smarsh.queuematcherpoc.regexprocessing.RegexProcessorFactory
+import com.smarsh.queuematcherpoc.service.AuditService
 import com.smarsh.queuematcherpoc.service.SurveillanceContextService
 import com.smarsh.queuematcherpoc.utils.CustomSerde
 import org.apache.kafka.common.serialization.Serdes
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Component
 class PolicyExecutorTopology(
     val objectMapper: ObjectMapper,
     val surveillanceContextService: SurveillanceContextService,
-    val customSerde: CustomSerde
+    val customSerde: CustomSerde,
+    val regexProcessorFactory: RegexProcessorFactory,
+    val auditService: AuditService
 ) {
 
     private val logger = LoggerFactory.getLogger(PolicyExecutorTopology::class.java)
@@ -43,8 +47,16 @@ class PolicyExecutorTopology(
             .peek { k, v -> logger.debug("message received on ingestion event topic. Key: {}. Value: {}", k, v) }
             .mapValues { v -> objectMapper.readValue(v, Communication::class.java) }
             .flatMapValues(::getEligibleSurveillanceContext)
-            .filter { _, v -> v.surveillanceContext.ignorePolicies.none { policy -> policy.apply(v.communication) } }
-            .filter { _, v -> v.surveillanceContext.filterPolicies.all { policy -> policy.apply(v.communication) } }
+            .filter { _, v ->
+                v.surveillanceContext.ignorePolicies.none { policy ->
+                    policy.apply(v.communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                }
+            }
+            .filter { _, v ->
+                v.surveillanceContext.filterPolicies.all { policy ->
+                    policy.apply(v.communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                }
+            }
             .peek { k, v -> logger.debug("message generated post applying ignore and filter policy. Key: {}. Value: {}", k, v) }
             .groupByKey()
             .aggregate(
