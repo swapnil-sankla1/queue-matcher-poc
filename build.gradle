@@ -1,0 +1,44 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.smarsh'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter' // standard spring boot starter dependency
+    implementation 'org.springframework.boot:spring-boot-starter-web' // This enables writing Controllers to expose the state over wire
+    implementation 'org.apache.kafka:kafka-streams' // Kafka streams library
+    implementation 'org.springframework.kafka:spring-kafka' // Spring support for Kafka
+    implementation 'org.jetbrains.kotlin:kotlin-reflect' // Enables using Kotlin within Spring boot
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2' // Jackson's Kotlin module
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Standard spring boot testing library
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.9.0' // Enables unit testing of Kafka streams
+    testImplementation 'org.testcontainers:junit-jupiter' // Let Jupiter know that test containers need to spin up
+    testImplementation 'org.testcontainers:kafka' // For spinning up Confluent Kafka container
+    testImplementation 'org.awaitility:awaitility' // Helps in testing async flows
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll '-Xjsr305=strict'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
