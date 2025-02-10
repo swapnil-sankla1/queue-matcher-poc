@@ -1,6 +1,7 @@
 package com.smarsh.queuematcherpoc.domain
 
 import com.smarsh.queuematcherpoc.regexprocessing.RegexProcessor
+import java.util.Date
 
 data class SurveillanceContext(
     val name: String,
@@ -19,13 +20,13 @@ data class SurveillanceContext(
             return if (result)
                 PolicyExecutionResult(
                     """
-                    $queueName configured on tenantId: $tenantId ignored document with gcid: ${communication.gcid} as part of ignore policy: $name
+                    ${Date()}: $queueName configured on tenantId: $tenantId ignored document with gcid: ${communication.gcid} as part of ignore policy: $name
                     """.trimIndent()
                 )
             else
                 PolicyExecutionResult(
                     """
-                    $queueName configured on tenantId: $tenantId did not ignore document with gcid: ${communication.gcid} as part of ignore policy: $name
+                    ${Date()}: $queueName configured on tenantId: $tenantId did not ignore document with gcid: ${communication.gcid} as part of ignore policy: $name
                     """.trimIndent()
                 )
         }
@@ -44,13 +45,13 @@ data class SurveillanceContext(
             return if (result) {
                 PolicyExecutionResult(
                     """
-                    $queueName configured on tenantId: $tenantId filtered document with gcid: ${communication.gcid} as part of filter policy: $name
+                    ${Date()}: $queueName configured on tenantId: $tenantId filtered document with gcid: ${communication.gcid} as part of filter policy: $name
                     """.trimIndent()
                 )
             } else {
                 PolicyExecutionResult(
                     """
-                    $queueName configured on tenantId: $tenantId did not filter document with gcid: ${communication.gcid} as part of filter policy: $name
+                    ${Date()}: $queueName configured on tenantId: $tenantId did not filter document with gcid: ${communication.gcid} as part of filter policy: $name
                     """.trimIndent()
                 )
             }

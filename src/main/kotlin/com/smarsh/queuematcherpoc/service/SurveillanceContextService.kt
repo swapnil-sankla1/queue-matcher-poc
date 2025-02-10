@@ -24,25 +24,53 @@ class SurveillanceContextService {
         //TODO: Move this to DB
         return listOf(
             SurveillanceContext(
-                "queue1",
-                "tenant1",
+                "principal-queue1",
+                "principal",
                 listOf(
-                    SurveillanceContext.IgnorePolicy("queue1", "tenant1", "ignore1", listOf("hr@smarsh.com")),
+                    SurveillanceContext.IgnorePolicy("principal-queue1", "principal", "ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter1", listOf("a"), Scenario("scenario1")),
-                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter2", listOf("b"), Scenario("scenario2")),
-                    SurveillanceContext.FilterPolicy("queue1", "tenant1", "filter3", listOf("c"), Scenario("scenario3"))
+                    SurveillanceContext.FilterPolicy("principal-queue1", "principal", "filter1", listOf(
+                        "I FOLLOWEDBY,1 started FOLLOWEDBY,2 business NEAR,0 part time",
+                        "CASH FOLLOWEDBY,3 update AND NEAR,7 security | bid | ask",
+                        "trading FOLLOWEDBY,9 coupon AND NEAR,7 tranche | maturity | floor | size",
+                        "CIBC | M&T | King | RJ | Citi | PNC | BOK | ING | Key | Barclays | Vulcan | USBI | HCW | Stanley | Mizuho | Seelaus | Goldman | GS | JPM | Morgan | JPMorgan | MS | BofA | Fifth | FHN | Agricole | WauBank | Capital | DCM | Comerica | Truist | Citizens | MUFG | Wells | RBC | Ryan | Academy | SWS | USB | Scotia | BNPP | ASIF | DB | LCM | SG | Natixis NEAR,4 signed FOLLOWEDBY,1 off",
+//                        "This email originated from a source outside FOLLOWEDBY,1 Principal network",
+                        "Avenue FOLLOWEDBY,2 Americas"
+                    ), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
-                "queue2",
-                "tenant1",
+                "jpmc-queue1",
+                "jpmc",
                 listOf(
-                    SurveillanceContext.IgnorePolicy("queue2", "tenant1", "ignore1", listOf("caizin.com")),
+                    SurveillanceContext.IgnorePolicy("jpmc-queue1", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("queue2", "tenant1", "filter1", listOf("a"), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue1", "jpmc", "jp-filter1", listOf(
+                        "I FOLLOWEDBY,1 started FOLLOWEDBY,2 business NEAR,0 part time",
+                        "CASH FOLLOWEDBY,3 update AND NEAR,7 security | bid | ask",
+                        "trading FOLLOWEDBY,9 coupon AND NEAR,7 tranche | maturity | floor | size",
+                        "CIBC | M&T | King | RJ | Citi | PNC | BOK | ING | Key | Barclays | Vulcan | USBI | HCW | Stanley | Mizuho | Seelaus | Goldman | GS | JPM | Morgan | JPMorgan | MS | BofA | Fifth | FHN | Agricole | WauBank | Capital | DCM | Comerica | Truist | Citizens | MUFG | Wells | RBC | Ryan | Academy | SWS | USB | Scotia | BNPP | ASIF | DB | LCM | SG | Natixis NEAR,4 signed FOLLOWEDBY,1 off",
+                        "Support Team NEAR,0 PTP Development",
+                    ), Scenario("scenario1")),
+                )
+            ),
+            SurveillanceContext(
+                "jpmc-queue2",
+                "jpmc",
+                listOf(
+                    SurveillanceContext.IgnorePolicy("jpmc-queue2", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
+                ),
+                listOf(
+                    SurveillanceContext.FilterPolicy("jpmc-queue2", "jpmc", "jp-filter2", listOf(
+                        "I FOLLOWEDBY,1 started FOLLOWEDBY,2 business NEAR,0 part time",
+                        "CASH FOLLOWEDBY,3 update AND NEAR,7 security | bid | ask",
+                        "trading FOLLOWEDBY,9 coupon AND NEAR,7 tranche | maturity | floor | size",
+                        "CIBC | M&T | King | RJ | Citi | PNC | BOK | ING | Key | Barclays | Vulcan | USBI | HCW | Stanley | Mizuho | Seelaus | Goldman | GS | JPM | Morgan | JPMorgan | MS | BofA | Fifth | FHN | Agricole | WauBank | Capital | DCM | Comerica | Truist | Citizens | MUFG | Wells | RBC | Ryan | Academy | SWS | USB | Scotia | BNPP | ASIF | DB | LCM | SG | Natixis NEAR,4 signed FOLLOWEDBY,1 off",
+                        "restricted.chase.com",
+                        "Reconciliation NEAR,0 Results Viewer"
+                    ), Scenario("scenario1")),
                 )
             )
         )

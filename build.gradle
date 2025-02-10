@@ -28,6 +28,10 @@ dependencies {
 
     implementation 'com.gliwka.hyperscan:hyperscan:5.4.11-3.0.0' // VectorScan java wrapper
 
+    implementation(platform("software.amazon.awssdk:bom:2.27.21")) // AWS SDK
+    implementation("software.amazon.awssdk:s3")
+    implementation("software.amazon.awssdk.crt:aws-crt:0.30.11") // AWS Common Runtime (CRT)
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Standard spring boot testing library
     testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.9.0' // Enables unit testing of Kafka streams
     testImplementation 'org.testcontainers:junit-jupiter' // Let Jupiter know that test containers need to spin up

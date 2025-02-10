@@ -15,6 +15,10 @@ class AuditService(val auditProducer: KafkaTemplate<String, String>) {
         const val AUDIT_EVENT_TOPIC_NAME = "policy-execution-audit-topic"
     }
 
+    fun auditMessageIngestion(message: String) {
+        auditProducer.send(AUDIT_EVENT_TOPIC_NAME, message)
+    }
+
     fun auditPolicyResult(result: SurveillanceContext.PolicyExecutionResult) {
         auditProducer.send(AUDIT_EVENT_TOPIC_NAME, result.content)
     }
