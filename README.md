@@ -7,7 +7,9 @@
 
 #### Create topics
   `./kafka-topics.sh --create --topic conduct-ingestion-topic --bootstrap-server localhost:9092`
+  
   `./kafka-topics.sh --create --topic surveillance-command-topic --bootstrap-server localhost:9092`
+  
   `./kafka-topics.sh --create --topic policy-execution-audit-topic --bootstrap-server localhost:9092`
   
 #### Produce data
