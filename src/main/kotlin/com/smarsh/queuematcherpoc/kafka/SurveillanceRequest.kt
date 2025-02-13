@@ -1,4 +1,4 @@
-package com.smarsh.queuematcherpoc.topology
+package com.smarsh.queuematcherpoc.kafka
 
 import com.smarsh.queuematcherpoc.domain.SurveillanceContext
 

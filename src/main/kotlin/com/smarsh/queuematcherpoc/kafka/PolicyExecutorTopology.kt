@@ -1,4 +1,4 @@
-package com.smarsh.queuematcherpoc.topology
+package com.smarsh.queuematcherpoc.kafka
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smarsh.queuematcherpoc.domain.Communication
@@ -18,6 +18,7 @@ import org.apache.kafka.streams.kstream.Produced
 import org.apache.kafka.streams.state.Stores
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.Date
 
@@ -25,13 +26,14 @@ import java.util.Date
 * Copyright 2025 Smarsh Inc.
 */
 @Component
+@ConditionalOnProperty(prefix = "app", name = ["consumer"], havingValue = "kafka-streams" )
 class PolicyExecutorTopology(
-    val objectMapper: ObjectMapper,
-    val surveillanceContextService: SurveillanceContextService,
-    val communicationService: CommunicationService,
-    val customSerde: CustomSerde,
-    val regexProcessorFactory: RegexProcessorFactory,
-    val auditService: AuditService
+    private val objectMapper: ObjectMapper,
+    private val surveillanceContextService: SurveillanceContextService,
+    private val communicationService: CommunicationService,
+    private val customSerde: CustomSerde,
+    private val regexProcessorFactory: RegexProcessorFactory,
+    private val auditService: AuditService
 ) {
 
     private val logger = LoggerFactory.getLogger(PolicyExecutorTopology::class.java)
@@ -51,6 +53,7 @@ class PolicyExecutorTopology(
             .peek { k, _ -> auditService.auditMessageIngestion("${Date()}: Message received on ingestion event topic with key: $k") }
             .mapValues { v -> objectMapper.readValue(v, CommunicationNotificationEvent::class.java) }
             .mapValues { v -> communicationService.retrieve(v) }
+            .peek { k, _ -> auditService.auditMessageIngestion("${Date()}: Communication is downloaded from S3 with key: $k")}
             .flatMapValues(::getEligibleSurveillanceContext)
             .filter { _, v ->
                 v.surveillanceContext.ignorePolicies.none { policy ->
@@ -70,6 +73,7 @@ class PolicyExecutorTopology(
                 Materialized.`as`<String, SurveillanceRequest>(Stores.inMemoryKeyValueStore(SURVEILLANCE_REQUEST_STORE))
                     .withKeySerde(stringSerde)
                     .withValueSerde(customSerde.get(SurveillanceRequest::class.java))
+                    .withLoggingDisabled()
             )
 
         topology.toStream().to(PERFORM_SURVEILLANCE_COMMAND_TOPIC, Produced.with(Serdes.String(), customSerde.get(SurveillanceRequest::class.java)))

@@ -1,4 +1,5 @@
 ## Queue Matcher POC
+- Prod nam supervision_library_list { type: 'LEXICON', name: 'oc_bem_xxx_resolve_complaint'}
 - Set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in environment variables
 - Test `AWS_ACCESS_KEY_ID=minioadmin AWS_SECRET_ACCESS_KEY=minioadmin aws --endpoint-url=http://localhost:9000 s3 ls`
 
