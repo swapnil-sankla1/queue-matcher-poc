@@ -6,6 +6,7 @@ package com.smarsh.queuematcherpoc.kafka
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smarsh.queuematcherpoc.domain.CommunicationNotificationEvent
+import com.smarsh.queuematcherpoc.domain.PolicyExecutor
 import com.smarsh.queuematcherpoc.domain.SurveillanceContext
 import com.smarsh.queuematcherpoc.regexprocessing.RegexProcessorFactory
 import com.smarsh.queuematcherpoc.service.AuditService
@@ -19,14 +20,15 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-@ConditionalOnProperty(prefix = "app", name = ["consumer"], havingValue = "kafka-consumer" )
+@ConditionalOnProperty(prefix = "app", name = ["consumer"], havingValue = "kafka-consumer")
 class PolicyExecutionKafkaListener(
     private val objectMapper: ObjectMapper,
     private val auditService: AuditService,
     private val communicationService: CommunicationService,
     private val surveillanceContextService: SurveillanceContextService,
     private val regexProcessorFactory: RegexProcessorFactory,
-    private val surveillanceRequestProducer: KafkaTemplate<String, String>
+    private val surveillanceRequestProducer: KafkaTemplate<String, String>,
+    private val policyExecutor: PolicyExecutor
 ) {
     companion object {
         const val INGESTION_EVENT_TOPIC_NAME = "conduct-ingestion-topic"
@@ -44,11 +46,11 @@ class PolicyExecutionKafkaListener(
         val surveillanceRequest = eligibleSurveillanceContexts
             .filter {
                 it.ignorePolicies.none { policy ->
-                    policy.apply(communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                    policyExecutor.execute(communication, policy, regexProcessorFactory.get(), auditService::auditPolicyResult)
                 }
             }.filter {
                 it.filterPolicies.all { policy ->
-                    policy.apply(communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                    policyExecutor.execute(communication, policy, regexProcessorFactory.get(), auditService::auditPolicyResult)
                 }
             }.fold(SurveillanceRequest()) { acc: SurveillanceRequest, it: SurveillanceContext ->
                 acc.add(it.name, it.filterPolicies)

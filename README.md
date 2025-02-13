@@ -13,6 +13,5 @@
   journal-115370be8722854525a536733b7e6f92|{ "gcid": "journal-115370be8722854525a536733b7e6f92", "tenantId": "jpmc", "bucketName": "supervision", "absoluteFileName":"/bulk-indexing/2025-02-10/13/index_json_eg2" }
   journal-adf929992a375d5f3a7ecda450ad496a|{ "gcid": "journal-adf929992a375d5f3a7ecda450ad496a", "tenantId": "jpmc", "bucketName": "supervision", "absoluteFileName":"/bulk-indexing/2025-02-10/13/index_json_eg3" }
 - Consume data:
-  `./kafka-console-consumer.sh --topic policy-execution-audit-topic \
-  --bootstrap-server localhost:9092 \
-  --from-beginning` 
+  `./kafka-console-consumer.sh --topic policy-execution-audit-topic --bootstrap-server localhost:9092` 
+  `./kafka-console-consumer.sh --topic surveillance-command-topic --bootstrap-server localhost:9092` 

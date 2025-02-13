@@ -57,7 +57,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue2", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue2", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue2", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -67,7 +67,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue3", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue3", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue3", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -77,7 +77,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue4", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue4", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue4", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -87,7 +87,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue2", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue2", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue2", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -97,7 +97,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue5", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue5", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue5", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -107,7 +107,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue6", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue6", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue6", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -117,7 +117,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue7", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue7", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue7", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -127,7 +127,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue8", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue8", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue8", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -137,7 +137,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue9", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue9", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue9", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             ),
             SurveillanceContext(
@@ -147,7 +147,7 @@ class SurveillanceContextService {
                     SurveillanceContext.IgnorePolicy("jpmc-queue10", "jpmc", "jp-ignore1", listOf("hr@smarsh.com")),
                 ),
                 listOf(
-                    SurveillanceContext.FilterPolicy("jpmc-queue10", "jpmc", "jp-filter2", jpmcRegex(), Scenario("scenario1")),
+                    SurveillanceContext.FilterPolicy("jpmc-queue10", "jpmc", "jp-filter1", jpmcRegex(), Scenario("scenario1")),
                 )
             )
         )

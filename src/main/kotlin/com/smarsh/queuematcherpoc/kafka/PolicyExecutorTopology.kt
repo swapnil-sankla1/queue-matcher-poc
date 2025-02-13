@@ -3,6 +3,7 @@ package com.smarsh.queuematcherpoc.kafka
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.smarsh.queuematcherpoc.domain.Communication
 import com.smarsh.queuematcherpoc.domain.CommunicationNotificationEvent
+import com.smarsh.queuematcherpoc.domain.PolicyExecutor
 import com.smarsh.queuematcherpoc.domain.SurveillanceContext
 import com.smarsh.queuematcherpoc.regexprocessing.RegexProcessorFactory
 import com.smarsh.queuematcherpoc.service.AuditService
@@ -33,7 +34,8 @@ class PolicyExecutorTopology(
     private val communicationService: CommunicationService,
     private val customSerde: CustomSerde,
     private val regexProcessorFactory: RegexProcessorFactory,
-    private val auditService: AuditService
+    private val auditService: AuditService,
+    private val policyExecutor: PolicyExecutor
 ) {
 
     private val logger = LoggerFactory.getLogger(PolicyExecutorTopology::class.java)
@@ -57,15 +59,15 @@ class PolicyExecutorTopology(
             .flatMapValues(::getEligibleSurveillanceContext)
             .filter { _, v ->
                 v.surveillanceContext.ignorePolicies.none { policy ->
-                    policy.apply(v.communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                    policyExecutor.execute(v.communication, policy, regexProcessorFactory.get(), auditService::auditPolicyResult)
                 }
             }
             .filter { _, v ->
                 v.surveillanceContext.filterPolicies.all { policy ->
-                    policy.apply(v.communication, regexProcessorFactory.get(), auditService::auditPolicyResult)
+                    policyExecutor.execute(v.communication, policy, regexProcessorFactory.get(), auditService::auditPolicyResult)
                 }
             }
-            .peek { k, v -> logger.debug("message generated post applying ignore and filter policy. Key: {}. Value: {}", k, v) }
+            .peek { k, v -> logger.info("message generated post applying ignore and filter policy. Key: {}. Value: {}", k, v) }
             .groupByKey()
             .aggregate(
                 { SurveillanceRequest() }, //TODO: Fix requestId
@@ -73,7 +75,6 @@ class PolicyExecutorTopology(
                 Materialized.`as`<String, SurveillanceRequest>(Stores.inMemoryKeyValueStore(SURVEILLANCE_REQUEST_STORE))
                     .withKeySerde(stringSerde)
                     .withValueSerde(customSerde.get(SurveillanceRequest::class.java))
-                    .withLoggingDisabled()
             )
 
         topology.toStream().to(PERFORM_SURVEILLANCE_COMMAND_TOPIC, Produced.with(Serdes.String(), customSerde.get(SurveillanceRequest::class.java)))
