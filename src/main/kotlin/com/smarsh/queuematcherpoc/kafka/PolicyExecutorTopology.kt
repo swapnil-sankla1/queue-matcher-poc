@@ -67,7 +67,7 @@ class PolicyExecutorTopology(
                     policyExecutor.execute(v.communication, policy, regexProcessorFactory.get(), auditService::auditPolicyResult)
                 }
             }
-            .peek { k, v -> logger.info("message generated post applying ignore and filter policy. Key: {}. Value: {}", k, v) }
+            .peek { k, v -> logger.debug("message generated post applying ignore and filter policy. Key: {}. Value: {}", k, v) }
             .groupByKey()
             .aggregate(
                 { SurveillanceRequest() }, //TODO: Fix requestId
